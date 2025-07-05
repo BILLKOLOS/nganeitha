@@ -1,0 +1,16 @@
+{
+  "services": [
+    {
+      "name": "backend",
+      "root": "backend",
+      "buildCommand": "npm install",
+      "startCommand": "npm start"
+    },
+    {
+      "name": "frontend",
+      "root": "frontend",
+      "buildCommand": "npm install",
+      "startCommand": "npm start"
+    }
+  ]
+}
