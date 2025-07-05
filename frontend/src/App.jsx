@@ -9,14 +9,17 @@ import Navbar from './components/Navbar';
 import DashboardPage from './pages/DashboardPage';
 import { useContext } from 'react';
 import { AuthContext } from './context/AuthContext';
+import HeaderBanner from './components/HeaderBanner';
+import FooterBanner from './components/FooterBanner';
 
 const App = () => {
   const { user } = useContext(AuthContext);
   const isAdmin = user && user.isAdmin;
   return (
     <Router>
+      <HeaderBanner />
       <Navbar />
-      <div style={{ paddingTop: '70px' }}>
+      <div style={{ paddingTop: '150px', paddingBottom: '100px' }}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/blog" element={<BlogPage />} />
@@ -26,6 +29,7 @@ const App = () => {
           <Route path="/dashboard" element={user ? <DashboardPage /> : <AuthPage />} />
         </Routes>
       </div>
+      <FooterBanner />
     </Router>
   );
 };

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import { FaBars, FaTimes } from 'react-icons/fa';
 
 const NavbarWrapper = styled.nav`
   width: 100%;
@@ -30,6 +31,21 @@ const Logo = styled(Link)`
 const NavLinks = styled.div`
   display: flex;
   gap: 2rem;
+  @media (max-width: 768px) {
+    position: fixed;
+    top: 70px;
+    right: 0;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    flex-direction: column;
+    width: 200px;
+    height: calc(100vh - 70px);
+    padding: 2rem 1rem;
+    gap: 1.5rem;
+    transform: ${({ $open }) => $open ? 'translateX(0)' : 'translateX(100%)'};
+    transition: transform 0.3s ease;
+    box-shadow: -2px 0 8px rgba(102, 126, 234, 0.08);
+    z-index: 200;
+  }
 `;
 const NavLink = styled(Link)`
   color: #fff;
@@ -51,9 +67,22 @@ const Tagline = styled.div`
   margin-top: -0.2rem;
   letter-spacing: 0.5px;
 `;
+const Hamburger = styled.div`
+  display: none;
+  @media (max-width: 768px) {
+    display: block;
+    font-size: 2rem;
+    color: #fff;
+    cursor: pointer;
+    z-index: 201;
+  }
+`;
 
 const Navbar = () => {
   const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const handleMenuToggle = () => setMenuOpen((open) => !open);
+  const handleLinkClick = () => setMenuOpen(false);
   return (
     <NavbarWrapper>
       <NavContainer>
@@ -61,11 +90,14 @@ const Navbar = () => {
           <Logo to="/">Ngaindeithia Health and Wellness</Logo>
           <Tagline>Real Food, Beyond Nutrition</Tagline>
         </div>
-        <NavLinks>
-          <NavLink to="/" $active={location.pathname === '/'}>Home</NavLink>
-          <NavLink to="/blog" $active={location.pathname.startsWith('/blog')}>Blog</NavLink>
-          <NavLink to="/ebooks" $active={location.pathname.startsWith('/ebooks')}>Ebooks</NavLink>
-          <NavLink to="/auth" $active={location.pathname.startsWith('/auth')}>Login / Signup</NavLink>
+        <Hamburger onClick={handleMenuToggle}>
+          {menuOpen ? <FaTimes /> : <FaBars />}
+        </Hamburger>
+        <NavLinks $open={menuOpen}>
+          <NavLink to="/" $active={location.pathname === '/'} onClick={handleLinkClick}>Home</NavLink>
+          <NavLink to="/blog" $active={location.pathname.startsWith('/blog')} onClick={handleLinkClick}>Blog</NavLink>
+          <NavLink to="/ebooks" $active={location.pathname.startsWith('/ebooks')} onClick={handleLinkClick}>Ebooks</NavLink>
+          <NavLink to="/auth" $active={location.pathname.startsWith('/auth')} onClick={handleLinkClick}>Login / Signup</NavLink>
         </NavLinks>
       </NavContainer>
     </NavbarWrapper>
